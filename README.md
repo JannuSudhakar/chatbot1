@@ -1,2 +1,7 @@
 # chatbot1
-simple chatbot that runs on huggingface's openai gpt2
+Now runs micorsoft's DialoGPT in the backend.
+
+# running instructions:
+install pytorch, numpy, the transformers model by huggingface and nodejs
+run:
+```sudo node index.js```
