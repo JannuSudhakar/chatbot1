@@ -1,0 +1,16 @@
+import sys
+from transformers import AutoModleWithLMHead,AutoTokenizer
+import torch
+
+tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-large")
+model = AutoModelWithLMHead.from_pretrained("microsoft/DialoGPT-large")
+
+chat_history = torch.tensor([[]]).long()
+for line in sys.argv[1:]:
+    new_ids = tokenizer.encode(line + tokenizer.eos_token,return_tensors='pt')
+    chat_history = torch.cat((chat_history,new_ids),dim=-1)
+
+out_ids = model.generate(chat_history,max_lenght=1000,pad_token_id=tokenizer.eos_token_id,temperature=4.0)
+out_ids = out_ids[:,chat_history.shape[-1]:]
+
+print(out_ids[0],skip_special_tokens=True)
